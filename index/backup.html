@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merlin质押概览</title>
+    <link rel="icon" href="./img/favicon.ico" type="image/x-icon" sizes="128x128">
+    <script async src="https://who.naiai.net/script.js" data-website-id="65bd0f27-ec63-491f-8cbe-ce07c866d0db"></script>
+    <style class="Maincss">
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333333;
+            font-size: 32px;
+        }
+
+        .percentage {
+            width: 25.56px;
+            font-size: 10px;
+            font-weight: bold;
+            color: #A5A1FD;
+            position: absolute;
+            right: 45%;
+            bottom: 1.5%;
+        }
+
+        .floorage {
+            width: 21.56px;
+            font-size: 10px;
+            font-weight: bold;
+            color: #A5A1FD;
+            position: absolute;
+            left: 18%;
+            bottom: 85.5%;
+        }
+        .sumperage {
+            width: 25.56px;
+            font-size: 10px;
+            font-weight: bold;
+            color: #A5A1FD;
+            position: absolute;
+            right: 18%;
+            bottom: 85.5%;
+        }
+
+
+        #totalusd {
+            color: #1d3d9a;
+            font-size: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .asset-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .asset {
+            position: relative;
+            flex: 0 0 calc(33.33% - 20px);
+            height: 150px;
+            background-color: #fcf4fa;
+            border-radius: 10px;
+            margin: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+            transition: box-shadow 0.3s ease-in-out;
+        }
+
+        .asset:hover {
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .asset h2 {
+            margin-top: 0;
+            font-size: 24px;
+            color: #333333;
+        }
+
+        .asset p {
+            margin: 0;
+            font-size: 17px;
+            color: #5b5656;
+        }
+
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            color: #5b5757;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        footer p:first-of-type {
+            font-weight: bold;
+            color: #333333;
+        }
+
+        .contributor-a {
+            text-decoration: none;
+            font-size: 10px;
+            font-weight: bold;
+            color: #333333;
+        }
+
+        .blg {
+            padding: 10px 20px;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            outline: none;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .blg:hover {
+            background-color: #fff;
+            color: #000;
+        }
+
+        @media (max-width: 600px) {
+            .asset {
+                flex: 0 0 calc(50% - 20px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .asset {
+                flex: 0 0 calc(100% - 20px);
+            }
+        }
+    </style>
+    <style class="Languagecss">
+        .flexContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .marginBottom {
+            margin-bottom: 9px;
+        }
+
+        .marginBottomLgNegative {
+            margin-bottom: -10px;
+        }
+
+        .fontSize {
+            font-size: 1rem;
+            color: #6c757d;
+        }
+
+        .toggleSwitch {
+            position: relative;
+            display: inline-block;
+            width: 54px;
+            height: 28px;
+            vertical-align: middle;
+            margin: 0 8px;
+        }
+
+        .toggleSwitchInput {
+            display: none;
+        }
+
+        .toggleSwitchLabel {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #fcf4fa;
+            border-radius: 14px;
+            cursor: pointer;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .toggleSwitchIndicator {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 24px;
+            height: 24px;
+            background-color: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+            transition: left 0.3s;
+        }
+
+        .toggleSwitchInput:checked~.toggleSwitchLabel {
+            background-color: #A5A1FD;
+        }
+
+        .toggleSwitchInput:checked~.toggleSwitchLabel .toggleSwitchIndicator {
+            left: calc(100% - 26px);
+        }
+
+        .positionRelative {
+            position: relative;
+        }
+    </style>
+    <style class="ToUSDandothercss">
+        .btchow {
+            margin-top: 10px;
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .tousdhow {
+            margin-top: 10px;
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .tobtc {
+            color: #e79e0c;
+            font-size: 13px;
+            vertical-align: middle;
+        }
+
+
+        .tooltip-text {
+            visibility: hidden;
+            width: 160px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            padding: 5px 0;
+            border-radius: 6px;
+
+            position: absolute;
+            z-index: 1;
+            /* Position the tooltip above the text */
+            top: 20px;
+            right: 0px;
+            margin-left: 2px;
+            /* Use half of the width to center the tooltip */
+
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .btchow:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body background="./img/bg.png">
+    <h1>
+        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 42 42" fill="none">
+            <rect width="42" height="42" rx="8" fill="#D9D9D9"></rect>
+            <rect width="42" height="42" rx="8" fill="url(#paint0_linear_1704_4304)"></rect>
+            <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M21.0004 33.5994C27.9592 33.5994 33.6004 27.9582 33.6004 20.9994C33.6004 14.0406 27.9592 8.39941 21.0004 8.39941C14.0416 8.39941 8.40039 14.0406 8.40039 20.9994C8.40039 24.1707 9.57196 27.0683 11.5059 29.2831L17.9111 23.3439C18.1613 22.9844 18.3647 22.594 18.5161 22.182L14.8779 21.6412C14.4489 21.5775 14.4489 20.9588 14.8779 20.895L18.1462 20.4092L14.363 15.305C14.1047 14.9566 14.5422 14.5191 14.8907 14.7773L19.9957 18.5612L20.4818 15.2911C20.5456 14.8621 21.1643 14.8621 21.228 15.2911L21.7138 18.5596L26.8167 14.7773C27.1652 14.5191 27.6027 14.9566 27.3444 15.305L23.5614 20.4089L26.8319 20.895C27.261 20.9588 27.261 21.5775 26.8319 21.6412L23.5615 22.1273L27.3444 27.2311C27.6027 27.5795 27.1652 28.017 26.8167 27.7588L21.7139 23.9765L21.228 27.2452C21.1643 27.6742 20.5456 27.6742 20.4818 27.2452L19.9379 23.586C19.5909 23.6909 19.2657 23.8545 18.9758 24.0686L12.8958 30.6473C15.0866 32.4896 17.9139 33.5994 21.0004 33.5994Z"
+                fill="white"></path>
+            <defs>
+                <linearGradient id="paint0_linear_1704_4304" x1="2.5" y1="3" x2="42" y2="32"
+                    gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#2A2CBF"></stop>
+                    <stop offset="1" stop-color="#AA68FF"></stop>
+                </linearGradient>
+            </defs>
+        </svg>
+        Merlin 质押概览
+    </h1>
+    <h2 id="totalusd">Total:<span id="totalusdsum">...</span></h2>
+
+    <div class="flexContainer marginBottom">
+        <span class="fontSize">zh</span>
+        <label class="toggleSwitch" for="customSwitch">
+            <input type="checkbox" class="toggleSwitchInput" id="customSwitch" onclick="toggleLanguage()">
+            <span class="toggleSwitchLabel">
+                <span class="toggleSwitchIndicator"></span>
+            </span>
+        </label>
+        <div class="positionRelative">
+            <span class="fontSize">en</span>
+        </div>
+    </div>
+
+
+    <div class="asset-container">
+        <div class="asset" id="BTC">
+            <h2 style="color: #e79e0c;">BTC</h2>
+            <span class="percentage" id="btcper">...</span>
+            <p>...</p>
+            <div class="btchow" ontouchstart="toggleTooltip('btctousd')" ontouchend="hideTooltip('btctousd')"
+                onmouseover="showTooltip('btctousd')" onmouseout="hideTooltip('btctousd')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 16 16" fill="none"
+                    style="vertical-align: middle;">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M8 15C11.866 15 15 11.866 15 8C15 4.13401 11.866 1 8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15ZM8 16C12.4183 16 16 12.4183 16 8C16 3.58172 12.4183 0 8 0C3.58172 0 0 3.58172 0 8C0 12.4183 3.58172 16 8 16Z"
+                        fill="#D9D9D9"></path>
+                    <path
+                        d="M7.21983 9.79501C7.21983 9.49501 7.23783 9.22301 7.27383 8.97901C7.31383 8.73101 7.39783 8.49101 7.52583 8.25901C7.64183 8.03501 7.77983 7.85301 7.93983 7.71301C8.09983 7.56901 8.27183 7.43101 8.45583 7.29901C8.63983 7.16701 8.82183 7.00501 9.00183 6.81301C9.16183 6.63301 9.26783 6.45301 9.31983 6.27301C9.37183 6.08901 9.39783 5.89501 9.39783 5.69101C9.39783 5.51101 9.37583 5.34901 9.33183 5.20501C9.29183 5.05701 9.22383 4.93101 9.12783 4.82701C8.98383 4.64701 8.80383 4.52301 8.58783 4.45501C8.37583 4.38701 8.15383 4.35301 7.92183 4.35301C7.70183 4.35301 7.49383 4.38301 7.29783 4.44301C7.10583 4.50301 6.94583 4.59701 6.81783 4.72501C6.68983 4.84101 6.59583 4.98301 6.53583 5.15101C6.47583 5.31501 6.44583 5.49301 6.44583 5.68501H5.32983C5.35383 5.33701 5.43583 5.00701 5.57583 4.69501C5.71983 4.37901 5.91783 4.11901 6.16983 3.91501C6.40583 3.71501 6.67583 3.56901 6.97983 3.47701C7.28383 3.38101 7.58983 3.33301 7.89783 3.33301C8.30583 3.33301 8.69183 3.39501 9.05583 3.51901C9.42383 3.64301 9.72983 3.84901 9.97383 4.13701C10.1618 4.34101 10.3018 4.57501 10.3938 4.83901C10.4858 5.10301 10.5318 5.38101 10.5318 5.67301C10.5318 6.02901 10.4598 6.36101 10.3158 6.66901C10.1758 6.97701 9.98583 7.25501 9.74583 7.50301C9.61383 7.64701 9.46983 7.77901 9.31383 7.89901C9.16183 8.01901 9.01583 8.13901 8.87583 8.25901C8.73983 8.37901 8.63183 8.51101 8.55183 8.65501C8.44783 8.84301 8.38783 9.01701 8.37183 9.17701C8.35983 9.33301 8.35383 9.53901 8.35383 9.79501H7.21983ZM7.22583 12.147V10.833H8.35383V12.147H7.22583Z"
+                        fill="black" fill-opacity="0.6"></path>
+                </svg>
+                <span class="tooltip-text" id="btctousd">...</span>
+            </div>
+        </div>
+        <div class="asset" id="BRC-420">
+            <h2 style="color: #4089d8;">蓝盒子</h2>
+            <span class="floorage" id="blueboxfloor">...</span>
+            <span class="sumperage" id="blueboxsumper">...</span>
+            <span class="percentage" id="blueboxper">...</span>
+            <p>...</p>
+            <div class="tousdhow" ontouchstart="toggleTooltip('blueboxusd')" ontouchend="hideTooltip('blueboxusd')"
+                onmouseover="showTooltip('blueboxusd')" onmouseout="hideTooltip('blueboxusd')">
+                <span class="tobtc" id="bluetobtc">&asymp;<span id="blueboxprice">...</span> BTC</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 16 16" fill="none"
+                    style="vertical-align: middle;">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M8 15C11.866 15 15 11.866 15 8C15 4.13401 11.866 1 8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15ZM8 16C12.4183 16 16 12.4183 16 8C16 3.58172 12.4183 0 8 0C3.58172 0 0 3.58172 0 8C0 12.4183 3.58172 16 8 16Z"
+                        fill="#D9D9D9"></path>
+                    <path
+                        d="M7.21983 9.79501C7.21983 9.49501 7.23783 9.22301 7.27383 8.97901C7.31383 8.73101 7.39783 8.49101 7.52583 8.25901C7.64183 8.03501 7.77983 7.85301 7.93983 7.71301C8.09983 7.56901 8.27183 7.43101 8.45583 7.29901C8.63983 7.16701 8.82183 7.00501 9.00183 6.81301C9.16183 6.63301 9.26783 6.45301 9.31983 6.27301C9.37183 6.08901 9.39783 5.89501 9.39783 5.69101C9.39783 5.51101 9.37583 5.34901 9.33183 5.20501C9.29183 5.05701 9.22383 4.93101 9.12783 4.82701C8.98383 4.64701 8.80383 4.52301 8.58783 4.45501C8.37583 4.38701 8.15383 4.35301 7.92183 4.35301C7.70183 4.35301 7.49383 4.38301 7.29783 4.44301C7.10583 4.50301 6.94583 4.59701 6.81783 4.72501C6.68983 4.84101 6.59583 4.98301 6.53583 5.15101C6.47583 5.31501 6.44583 5.49301 6.44583 5.68501H5.32983C5.35383 5.33701 5.43583 5.00701 5.57583 4.69501C5.71983 4.37901 5.91783 4.11901 6.16983 3.91501C6.40583 3.71501 6.67583 3.56901 6.97983 3.47701C7.28383 3.38101 7.58983 3.33301 7.89783 3.33301C8.30583 3.33301 8.69183 3.39501 9.05583 3.51901C9.42383 3.64301 9.72983 3.84901 9.97383 4.13701C10.1618 4.34101 10.3018 4.57501 10.3938 4.83901C10.4858 5.10301 10.5318 5.38101 10.5318 5.67301C10.5318 6.02901 10.4598 6.36101 10.3158 6.66901C10.1758 6.97701 9.98583 7.25501 9.74583 7.50301C9.61383 7.64701 9.46983 7.77901 9.31383 7.89901C9.16183 8.01901 9.01583 8.13901 8.87583 8.25901C8.73983 8.37901 8.63183 8.51101 8.55183 8.65501C8.44783 8.84301 8.38783 9.01701 8.37183 9.17701C8.35983 9.33301 8.35383 9.53901 8.35383 9.79501H7.21983ZM7.22583 12.147V10.833H8.35383V12.147H7.22583Z"
+                        fill="black" fill-opacity="0.6"></path>
+                </svg>
+                <span class="tooltip-text" id="blueboxusd">...</span>
+            </div>
+        </div>
+        <div class="asset" id="Bitmap">
+            <h2 style="color: #e79e0c;">Bitmap</h2>
+            <span class="percentage" id="bitmapper">...</span>
+            <p>...</p>
+            <div class="tousdhow" ontouchstart="toggleTooltip('bitmapusd')" ontouchend="hideTooltip('bitmapusd')"
+                onmouseover="showTooltip('bitmapusd')" onmouseout="hideTooltip('bitmapusd')">
+                <span class="tobtc" id="bluetobtc">&asymp;<span id="bitmapprice">...</span> BTC</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 16 16" fill="none"
+                    style="vertical-align: middle;">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M8 15C11.866 15 15 11.866 15 8C15 4.13401 11.866 1 8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15ZM8 16C12.4183 16 16 12.4183 16 8C16 3.58172 12.4183 0 8 0C3.58172 0 0 3.58172 0 8C0 12.4183 3.58172 16 8 16Z"
+                        fill="#D9D9D9"></path>
+                    <path
+                        d="M7.21983 9.79501C7.21983 9.49501 7.23783 9.22301 7.27383 8.97901C7.31383 8.73101 7.39783 8.49101 7.52583 8.25901C7.64183 8.03501 7.77983 7.85301 7.93983 7.71301C8.09983 7.56901 8.27183 7.43101 8.45583 7.29901C8.63983 7.16701 8.82183 7.00501 9.00183 6.81301C9.16183 6.63301 9.26783 6.45301 9.31983 6.27301C9.37183 6.08901 9.39783 5.89501 9.39783 5.69101C9.39783 5.51101 9.37583 5.34901 9.33183 5.20501C9.29183 5.05701 9.22383 4.93101 9.12783 4.82701C8.98383 4.64701 8.80383 4.52301 8.58783 4.45501C8.37583 4.38701 8.15383 4.35301 7.92183 4.35301C7.70183 4.35301 7.49383 4.38301 7.29783 4.44301C7.10583 4.50301 6.94583 4.59701 6.81783 4.72501C6.68983 4.84101 6.59583 4.98301 6.53583 5.15101C6.47583 5.31501 6.44583 5.49301 6.44583 5.68501H5.32983C5.35383 5.33701 5.43583 5.00701 5.57583 4.69501C5.71983 4.37901 5.91783 4.11901 6.16983 3.91501C6.40583 3.71501 6.67583 3.56901 6.97983 3.47701C7.28383 3.38101 7.58983 3.33301 7.89783 3.33301C8.30583 3.33301 8.69183 3.39501 9.05583 3.51901C9.42383 3.64301 9.72983 3.84901 9.97383 4.13701C10.1618 4.34101 10.3018 4.57501 10.3938 4.83901C10.4858 5.10301 10.5318 5.38101 10.5318 5.67301C10.5318 6.02901 10.4598 6.36101 10.3158 6.66901C10.1758 6.97701 9.98583 7.25501 9.74583 7.50301C9.61383 7.64701 9.46983 7.77901 9.31383 7.89901C9.16183 8.01901 9.01583 8.13901 8.87583 8.25901C8.73983 8.37901 8.63183 8.51101 8.55183 8.65501C8.44783 8.84301 8.38783 9.01701 8.37183 9.17701C8.35983 9.33301 8.35383 9.53901 8.35383 9.79501H7.21983ZM7.22583 12.147V10.833H8.35383V12.147H7.22583Z"
+                        fill="black" fill-opacity="0.6"></path>
+                </svg>
+                <span class="tooltip-text" id="bitmapusd">...</span>
+            </div>
+        </div>
+
+        <div class="asset" id="Musicbox">
+            <h2 style="color: #b362e9;">音乐盒</h2>
+            <span class="percentage" id="tsanper">...</span>
+            <p>...</p>
+            <div class="tousdhow" ontouchstart="toggleTooltip('musicboxusd')" ontouchend="hideTooltip('musicboxusd')"
+                onmouseover="showTooltip('musicboxusd')" onmouseout="hideTooltip('musicboxusd')">
+                <span class="tobtc" id="bluetobtc">&asymp;<span id="musicboxprice">...</span> BTC</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 16 16" fill="none"
+                    style="vertical-align: middle;">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M8 15C11.866 15 15 11.866 15 8C15 4.13401 11.866 1 8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15ZM8 16C12.4183 16 16 12.4183 16 8C16 3.58172 12.4183 0 8 0C3.58172 0 0 3.58172 0 8C0 12.4183 3.58172 16 8 16Z"
+                        fill="#D9D9D9"></path>
+                    <path
+                        d="M7.21983 9.79501C7.21983 9.49501 7.23783 9.22301 7.27383 8.97901C7.31383 8.73101 7.39783 8.49101 7.52583 8.25901C7.64183 8.03501 7.77983 7.85301 7.93983 7.71301C8.09983 7.56901 8.27183 7.43101 8.45583 7.29901C8.63983 7.16701 8.82183 7.00501 9.00183 6.81301C9.16183 6.63301 9.26783 6.45301 9.31983 6.27301C9.37183 6.08901 9.39783 5.89501 9.39783 5.69101C9.39783 5.51101 9.37583 5.34901 9.33183 5.20501C9.29183 5.05701 9.22383 4.93101 9.12783 4.82701C8.98383 4.64701 8.80383 4.52301 8.58783 4.45501C8.37583 4.38701 8.15383 4.35301 7.92183 4.35301C7.70183 4.35301 7.49383 4.38301 7.29783 4.44301C7.10583 4.50301 6.94583 4.59701 6.81783 4.72501C6.68983 4.84101 6.59583 4.98301 6.53583 5.15101C6.47583 5.31501 6.44583 5.49301 6.44583 5.68501H5.32983C5.35383 5.33701 5.43583 5.00701 5.57583 4.69501C5.71983 4.37901 5.91783 4.11901 6.16983 3.91501C6.40583 3.71501 6.67583 3.56901 6.97983 3.47701C7.28383 3.38101 7.58983 3.33301 7.89783 3.33301C8.30583 3.33301 8.69183 3.39501 9.05583 3.51901C9.42383 3.64301 9.72983 3.84901 9.97383 4.13701C10.1618 4.34101 10.3018 4.57501 10.3938 4.83901C10.4858 5.10301 10.5318 5.38101 10.5318 5.67301C10.5318 6.02901 10.4598 6.36101 10.3158 6.66901C10.1758 6.97701 9.98583 7.25501 9.74583 7.50301C9.61383 7.64701 9.46983 7.77901 9.31383 7.89901C9.16183 8.01901 9.01583 8.13901 8.87583 8.25901C8.73983 8.37901 8.63183 8.51101 8.55183 8.65501C8.44783 8.84301 8.38783 9.01701 8.37183 9.17701C8.35983 9.33301 8.35383 9.53901 8.35383 9.79501H7.21983ZM7.22583 12.147V10.833H8.35383V12.147H7.22583Z"
+                        fill="black" fill-opacity="0.6"></path>
+                </svg>
+                <span class="tooltip-text" id="musicboxusd">...</span>
+            </div>
+        </div>
+        <div class="asset" id="Mineral">
+            <h2 style="color: #4089d8;">蓝宝石</h2>
+            <span class="percentage" id="mineralper">...</span>
+            <p>...</p>
+            <div class="tousdhow" ontouchstart="toggleTooltip('mineralusd')" ontouchend="hideTooltip('mineralusd')"
+                onmouseover="showTooltip('mineralusd')" onmouseout="hideTooltip('mineralusd')">
+                <span class="tobtc" id="bluetobtc">&asymp;<span id="mineralprice">...</span> BTC</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 16 16" fill="none"
+                    style="vertical-align: middle;">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M8 15C11.866 15 15 11.866 15 8C15 4.13401 11.866 1 8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15ZM8 16C12.4183 16 16 12.4183 16 8C16 3.58172 12.4183 0 8 0C3.58172 0 0 3.58172 0 8C0 12.4183 3.58172 16 8 16Z"
+                        fill="#D9D9D9"></path>
+                    <path
+                        d="M7.21983 9.79501C7.21983 9.49501 7.23783 9.22301 7.27383 8.97901C7.31383 8.73101 7.39783 8.49101 7.52583 8.25901C7.64183 8.03501 7.77983 7.85301 7.93983 7.71301C8.09983 7.56901 8.27183 7.43101 8.45583 7.29901C8.63983 7.16701 8.82183 7.00501 9.00183 6.81301C9.16183 6.63301 9.26783 6.45301 9.31983 6.27301C9.37183 6.08901 9.39783 5.89501 9.39783 5.69101C9.39783 5.51101 9.37583 5.34901 9.33183 5.20501C9.29183 5.05701 9.22383 4.93101 9.12783 4.82701C8.98383 4.64701 8.80383 4.52301 8.58783 4.45501C8.37583 4.38701 8.15383 4.35301 7.92183 4.35301C7.70183 4.35301 7.49383 4.38301 7.29783 4.44301C7.10583 4.50301 6.94583 4.59701 6.81783 4.72501C6.68983 4.84101 6.59583 4.98301 6.53583 5.15101C6.47583 5.31501 6.44583 5.49301 6.44583 5.68501H5.32983C5.35383 5.33701 5.43583 5.00701 5.57583 4.69501C5.71983 4.37901 5.91783 4.11901 6.16983 3.91501C6.40583 3.71501 6.67583 3.56901 6.97983 3.47701C7.28383 3.38101 7.58983 3.33301 7.89783 3.33301C8.30583 3.33301 8.69183 3.39501 9.05583 3.51901C9.42383 3.64301 9.72983 3.84901 9.97383 4.13701C10.1618 4.34101 10.3018 4.57501 10.3938 4.83901C10.4858 5.10301 10.5318 5.38101 10.5318 5.67301C10.5318 6.02901 10.4598 6.36101 10.3158 6.66901C10.1758 6.97701 9.98583 7.25501 9.74583 7.50301C9.61383 7.64701 9.46983 7.77901 9.31383 7.89901C9.16183 8.01901 9.01583 8.13901 8.87583 8.25901C8.73983 8.37901 8.63183 8.51101 8.55183 8.65501C8.44783 8.84301 8.38783 9.01701 8.37183 9.17701C8.35983 9.33301 8.35383 9.53901 8.35383 9.79501H7.21983ZM7.22583 12.147V10.833H8.35383V12.147H7.22583Z"
+                        fill="black" fill-opacity="0.6"></path>
+                </svg>
+                <span class="tooltip-text" id="mineralusd">...</span>
+            </div>
+        </div>
+        <div class="asset" id="brc20">
+            <h2 style="color: #e79e0c;">BRC20</h2>
+            <span class="percentage" id="brcper">...</span>
+            <p>...</p>
+            <div class="tousdhow" ontouchstart="toggleTooltip('brcusd')" ontouchend="hideTooltip('brcusd')"
+                onmouseover="showTooltip('brcusd')" onmouseout="hideTooltip('brcusd')">
+                <span class="tobtc" id="bluetobtc">&asymp;<span id="brcprice">...</span> BTC</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 16 16" fill="none"
+                    style="vertical-align: middle;">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M8 15C11.866 15 15 11.866 15 8C15 4.13401 11.866 1 8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15ZM8 16C12.4183 16 16 12.4183 16 8C16 3.58172 12.4183 0 8 0C3.58172 0 0 3.58172 0 8C0 12.4183 3.58172 16 8 16Z"
+                        fill="#D9D9D9"></path>
+                    <path
+                        d="M7.21983 9.79501C7.21983 9.49501 7.23783 9.22301 7.27383 8.97901C7.31383 8.73101 7.39783 8.49101 7.52583 8.25901C7.64183 8.03501 7.77983 7.85301 7.93983 7.71301C8.09983 7.56901 8.27183 7.43101 8.45583 7.29901C8.63983 7.16701 8.82183 7.00501 9.00183 6.81301C9.16183 6.63301 9.26783 6.45301 9.31983 6.27301C9.37183 6.08901 9.39783 5.89501 9.39783 5.69101C9.39783 5.51101 9.37583 5.34901 9.33183 5.20501C9.29183 5.05701 9.22383 4.93101 9.12783 4.82701C8.98383 4.64701 8.80383 4.52301 8.58783 4.45501C8.37583 4.38701 8.15383 4.35301 7.92183 4.35301C7.70183 4.35301 7.49383 4.38301 7.29783 4.44301C7.10583 4.50301 6.94583 4.59701 6.81783 4.72501C6.68983 4.84101 6.59583 4.98301 6.53583 5.15101C6.47583 5.31501 6.44583 5.49301 6.44583 5.68501H5.32983C5.35383 5.33701 5.43583 5.00701 5.57583 4.69501C5.71983 4.37901 5.91783 4.11901 6.16983 3.91501C6.40583 3.71501 6.67583 3.56901 6.97983 3.47701C7.28383 3.38101 7.58983 3.33301 7.89783 3.33301C8.30583 3.33301 8.69183 3.39501 9.05583 3.51901C9.42383 3.64301 9.72983 3.84901 9.97383 4.13701C10.1618 4.34101 10.3018 4.57501 10.3938 4.83901C10.4858 5.10301 10.5318 5.38101 10.5318 5.67301C10.5318 6.02901 10.4598 6.36101 10.3158 6.66901C10.1758 6.97701 9.98583 7.25501 9.74583 7.50301C9.61383 7.64701 9.46983 7.77901 9.31383 7.89901C9.16183 8.01901 9.01583 8.13901 8.87583 8.25901C8.73983 8.37901 8.63183 8.51101 8.55183 8.65501C8.44783 8.84301 8.38783 9.01701 8.37183 9.17701C8.35983 9.33301 8.35383 9.53901 8.35383 9.79501H7.21983ZM7.22583 12.147V10.833H8.35383V12.147H7.22583Z"
+                        fill="black" fill-opacity="0.6"></path>
+                </svg>
+                <span class="tooltip-text" id="brcusd">...</span>
+            </div>
+        </div>
+        <div class="asset" id="eth">
+            <h2 style="color: #627EEA;">ETH</h2>
+            <span class="percentage" id="ethper">...</span>
+            <p>...</p>
+            <div class="btchow" ontouchstart="toggleTooltip('ethtousd')" ontouchend="hideTooltip('ethtousd')"
+                onmouseover="showTooltip('ethtousd')" onmouseout="hideTooltip('ethtousd')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 16 16" fill="none"
+                    style="vertical-align: middle;">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M8 15C11.866 15 15 11.866 15 8C15 4.13401 11.866 1 8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15ZM8 16C12.4183 16 16 12.4183 16 8C16 3.58172 12.4183 0 8 0C3.58172 0 0 3.58172 0 8C0 12.4183 3.58172 16 8 16Z"
+                        fill="#D9D9D9"></path>
+                    <path
+                        d="M7.21983 9.79501C7.21983 9.49501 7.23783 9.22301 7.27383 8.97901C7.31383 8.73101 7.39783 8.49101 7.52583 8.25901C7.64183 8.03501 7.77983 7.85301 7.93983 7.71301C8.09983 7.56901 8.27183 7.43101 8.45583 7.29901C8.63983 7.16701 8.82183 7.00501 9.00183 6.81301C9.16183 6.63301 9.26783 6.45301 9.31983 6.27301C9.37183 6.08901 9.39783 5.89501 9.39783 5.69101C9.39783 5.51101 9.37583 5.34901 9.33183 5.20501C9.29183 5.05701 9.22383 4.93101 9.12783 4.82701C8.98383 4.64701 8.80383 4.52301 8.58783 4.45501C8.37583 4.38701 8.15383 4.35301 7.92183 4.35301C7.70183 4.35301 7.49383 4.38301 7.29783 4.44301C7.10583 4.50301 6.94583 4.59701 6.81783 4.72501C6.68983 4.84101 6.59583 4.98301 6.53583 5.15101C6.47583 5.31501 6.44583 5.49301 6.44583 5.68501H5.32983C5.35383 5.33701 5.43583 5.00701 5.57583 4.69501C5.71983 4.37901 5.91783 4.11901 6.16983 3.91501C6.40583 3.71501 6.67583 3.56901 6.97983 3.47701C7.28383 3.38101 7.58983 3.33301 7.89783 3.33301C8.30583 3.33301 8.69183 3.39501 9.05583 3.51901C9.42383 3.64301 9.72983 3.84901 9.97383 4.13701C10.1618 4.34101 10.3018 4.57501 10.3938 4.83901C10.4858 5.10301 10.5318 5.38101 10.5318 5.67301C10.5318 6.02901 10.4598 6.36101 10.3158 6.66901C10.1758 6.97701 9.98583 7.25501 9.74583 7.50301C9.61383 7.64701 9.46983 7.77901 9.31383 7.89901C9.16183 8.01901 9.01583 8.13901 8.87583 8.25901C8.73983 8.37901 8.63183 8.51101 8.55183 8.65501C8.44783 8.84301 8.38783 9.01701 8.37183 9.17701C8.35983 9.33301 8.35383 9.53901 8.35383 9.79501H7.21983ZM7.22583 12.147V10.833H8.35383V12.147H7.22583Z"
+                        fill="black" fill-opacity="0.6"></path>
+                </svg>
+                <span class="tooltip-text" id="ethtousd">...</span>
+            </div>
+        </div>
+        <div class="asset" id="usdt">
+            <h2 style="color: #00A478;">USDT</h2>
+            <span class="percentage" id="usdtper">...</span>
+            <p>...</p>
+            <div class="btchow" ontouchstart="toggleTooltip('usdttousd')" ontouchend="hideTooltip('usdttousd')"
+                onmouseover="showTooltip('usdttousd')" onmouseout="hideTooltip('usdttousd')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 16 16" fill="none"
+                    style="vertical-align: middle;">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M8 15C11.866 15 15 11.866 15 8C15 4.13401 11.866 1 8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15ZM8 16C12.4183 16 16 12.4183 16 8C16 3.58172 12.4183 0 8 0C3.58172 0 0 3.58172 0 8C0 12.4183 3.58172 16 8 16Z"
+                        fill="#D9D9D9"></path>
+                    <path
+                        d="M7.21983 9.79501C7.21983 9.49501 7.23783 9.22301 7.27383 8.97901C7.31383 8.73101 7.39783 8.49101 7.52583 8.25901C7.64183 8.03501 7.77983 7.85301 7.93983 7.71301C8.09983 7.56901 8.27183 7.43101 8.45583 7.29901C8.63983 7.16701 8.82183 7.00501 9.00183 6.81301C9.16183 6.63301 9.26783 6.45301 9.31983 6.27301C9.37183 6.08901 9.39783 5.89501 9.39783 5.69101C9.39783 5.51101 9.37583 5.34901 9.33183 5.20501C9.29183 5.05701 9.22383 4.93101 9.12783 4.82701C8.98383 4.64701 8.80383 4.52301 8.58783 4.45501C8.37583 4.38701 8.15383 4.35301 7.92183 4.35301C7.70183 4.35301 7.49383 4.38301 7.29783 4.44301C7.10583 4.50301 6.94583 4.59701 6.81783 4.72501C6.68983 4.84101 6.59583 4.98301 6.53583 5.15101C6.47583 5.31501 6.44583 5.49301 6.44583 5.68501H5.32983C5.35383 5.33701 5.43583 5.00701 5.57583 4.69501C5.71983 4.37901 5.91783 4.11901 6.16983 3.91501C6.40583 3.71501 6.67583 3.56901 6.97983 3.47701C7.28383 3.38101 7.58983 3.33301 7.89783 3.33301C8.30583 3.33301 8.69183 3.39501 9.05583 3.51901C9.42383 3.64301 9.72983 3.84901 9.97383 4.13701C10.1618 4.34101 10.3018 4.57501 10.3938 4.83901C10.4858 5.10301 10.5318 5.38101 10.5318 5.67301C10.5318 6.02901 10.4598 6.36101 10.3158 6.66901C10.1758 6.97701 9.98583 7.25501 9.74583 7.50301C9.61383 7.64701 9.46983 7.77901 9.31383 7.89901C9.16183 8.01901 9.01583 8.13901 8.87583 8.25901C8.73983 8.37901 8.63183 8.51101 8.55183 8.65501C8.44783 8.84301 8.38783 9.01701 8.37183 9.17701C8.35983 9.33301 8.35383 9.53901 8.35383 9.79501H7.21983ZM7.22583 12.147V10.833H8.35383V12.147H7.22583Z"
+                        fill="black" fill-opacity="0.6"></path>
+                </svg>
+                <span class="tooltip-text" id="usdttousd">...</span>
+            </div>
+        </div>
+        <div class="asset" id="usdc">
+            <h2 style="color: #2775CA;">USDC</h2>
+            <span class="percentage" id="usdcper">...</span>
+            <p>...</p>
+            <div class="btchow" ontouchstart="toggleTooltip('usdctousd')" ontouchend="hideTooltip('usdctousd')"
+                onmouseover="showTooltip('usdctousd')" onmouseout="hideTooltip('usdctousd')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 16 16" fill="none"
+                    style="vertical-align: middle;">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M8 15C11.866 15 15 11.866 15 8C15 4.13401 11.866 1 8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15ZM8 16C12.4183 16 16 12.4183 16 8C16 3.58172 12.4183 0 8 0C3.58172 0 0 3.58172 0 8C0 12.4183 3.58172 16 8 16Z"
+                        fill="#D9D9D9"></path>
+                    <path
+                        d="M7.21983 9.79501C7.21983 9.49501 7.23783 9.22301 7.27383 8.97901C7.31383 8.73101 7.39783 8.49101 7.52583 8.25901C7.64183 8.03501 7.77983 7.85301 7.93983 7.71301C8.09983 7.56901 8.27183 7.43101 8.45583 7.29901C8.63983 7.16701 8.82183 7.00501 9.00183 6.81301C9.16183 6.63301 9.26783 6.45301 9.31983 6.27301C9.37183 6.08901 9.39783 5.89501 9.39783 5.69101C9.39783 5.51101 9.37583 5.34901 9.33183 5.20501C9.29183 5.05701 9.22383 4.93101 9.12783 4.82701C8.98383 4.64701 8.80383 4.52301 8.58783 4.45501C8.37583 4.38701 8.15383 4.35301 7.92183 4.35301C7.70183 4.35301 7.49383 4.38301 7.29783 4.44301C7.10583 4.50301 6.94583 4.59701 6.81783 4.72501C6.68983 4.84101 6.59583 4.98301 6.53583 5.15101C6.47583 5.31501 6.44583 5.49301 6.44583 5.68501H5.32983C5.35383 5.33701 5.43583 5.00701 5.57583 4.69501C5.71983 4.37901 5.91783 4.11901 6.16983 3.91501C6.40583 3.71501 6.67583 3.56901 6.97983 3.47701C7.28383 3.38101 7.58983 3.33301 7.89783 3.33301C8.30583 3.33301 8.69183 3.39501 9.05583 3.51901C9.42383 3.64301 9.72983 3.84901 9.97383 4.13701C10.1618 4.34101 10.3018 4.57501 10.3938 4.83901C10.4858 5.10301 10.5318 5.38101 10.5318 5.67301C10.5318 6.02901 10.4598 6.36101 10.3158 6.66901C10.1758 6.97701 9.98583 7.25501 9.74583 7.50301C9.61383 7.64701 9.46983 7.77901 9.31383 7.89901C9.16183 8.01901 9.01583 8.13901 8.87583 8.25901C8.73983 8.37901 8.63183 8.51101 8.55183 8.65501C8.44783 8.84301 8.38783 9.01701 8.37183 9.17701C8.35983 9.33301 8.35383 9.53901 8.35383 9.79501H7.21983ZM7.22583 12.147V10.833H8.35383V12.147H7.22583Z"
+                        fill="black" fill-opacity="0.6"></path>
+                </svg>
+                <span class="tooltip-text" id="usdctousd">...</span>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p><span class="uptimeText">Merlin质押已运行</span><br><span id="uptime"></span></p>
+        <br>
+        <p><span class="downtimeText">质押资产距可提取时间</span><br><span id="downtime"></span></p>
+        <p class="disclaimer">不代表官方数据，存在一些些偏差</p>
+        <p>Contributors:
+            <a class="contributor-a" href="https://bitmap.date">Bitmap.Date</a>
+            <a class="contributor-a" href="https://twitter.com/EY_hungry" target="_blank">EY_hungry</a>
+        </p>
+    </footer>
+
+    <script class="Mainjs">
+        // let currentLanguage = 'en'; // replace with detected language
+        let currentLanguage = navigator.language.startsWith('zh') ? 'zh' : 'en';
+        let btcokprice = 0;
+        let ethokprice = 0;
+
+        let ethsum = 0;
+        let usdcsum = 0;
+        let usdtsum = 0;
+
+        let blueboxokprice = 0;
+        let blueboxokusdprice = 0;
+
+        let bitmapokprice = 0;
+        let bitmapokusdprice = 0;
+
+        let musicboxokprice = 0;
+        let musicboxokusdprice = 0;
+
+        let mineralokprice = 0;
+        let mineralokusdprice = 0;
+
+        let brcokprice = 0;
+        let brcokusdprice = 0;
+
+        if (currentLanguage === 'zh') {
+            customSwitch.setAttribute('onclick', 'toggleLanguage()');
+        } else if (currentLanguage === 'en') {
+            customSwitch.setAttribute('checked', true);
+            customSwitch.setAttribute('onclick', 'toggleLanguage()');
+        }
+
+        const startTime = new Date('2024-02-08T21:00:00+08:00');
+        const endTime = new Date('2024-04-01T00:00:00+08:00');
+
+        Promise.all([
+            getsetLanguage(),
+            btcprice(),
+            ethprice(),
+            getalltheprice(),
+            getmerlinothers()
+        ]).then(() => {
+            fetchDataAndUpdateTime();
+            setInterval(fetchDataAndUpdateTime, 300000);
+        });
+
+        function getalltheprice() {
+            // 获取价格
+            getokPrice("./json/blueboxprice.json")
+                .then(data => {
+                    blueboxokprice = data.price;
+                    blueboxokusdprice = data.usdPrice;
+                });
+            getokPrice("./json/bitmapprice.json")
+                .then(data => {
+                    bitmapokprice = data.price;
+                    bitmapokusdprice = data.usdPrice;
+                });
+            getokPrice("./json/tsanprice.json")
+                .then(data => {
+                    musicboxokprice = data.price;
+                    musicboxokusdprice = data.usdPrice;
+                });
+            getokPrice("./json/mineralprice.json")
+                .then(data => {
+                    mineralokprice = data.price;
+                    mineralokusdprice = data.usdPrice;
+                });
+
+            getbrcPrice("./json/merlinbrc.json")
+                .then(data => {
+                    brcokprice = data.price;
+                    brcokusdprice = data.usdPrice;
+                    console.log(brcokprice);
+                    console.log(brcokusdprice);
+                });
+        }
+
+        function btcprice() {
+            return new Promise((resolve, reject) => {
+                var request = new XMLHttpRequest();
+                request.open("GET", "./json/btcprice.json", true);
+                request.onreadystatechange = function () {
+                    if (request.readyState === 4 && request.status === 200) {
+                        var json = JSON.parse(request.responseText);
+                        btcokprice = json.data[0].price;
+                        console.log(btcokprice);
+                        resolve();
+                    }
+                };
+                request.send();
+            });
+        }
+
+        function ethprice() {
+            return new Promise((resolve, reject) => {
+                var request = new XMLHttpRequest();
+                request.open("GET", "./json/ethprice.json", true);
+                request.onreadystatechange = function () {
+                    if (request.readyState === 4 && request.status === 200) {
+                        var json = JSON.parse(request.responseText);
+                        ethokprice = json.data[0].price;
+                        console.log(ethokprice);
+                        resolve();
+                    }
+                };
+                request.send();
+            });
+        }
+
+        function getokPrice(jsonFile) {
+            return new Promise((resolve, reject) => {
+                const request = new XMLHttpRequest();
+                request.open("GET", jsonFile, true);
+                request.onreadystatechange = function () {
+                    if (request.readyState === 4 && request.status === 200) {
+                        const json = JSON.parse(request.responseText);
+                        const price = json.data.platformFloorPrice.sourceFloorPrices[0].floorPrice.price;
+                        const usdPrice = json.data.platformFloorPrice.sourceFloorPrices[0].floorPrice.usdPrice;
+                        resolve({ price, usdPrice });
+                    }
+                };
+                request.send();
+            });
+        }
+
+        function getbrcPrice(jsonFile) {
+            return new Promise((resolve, reject) => {
+                const request = new XMLHttpRequest();
+                request.open("GET", jsonFile, true);
+                request.onreadystatechange = function () {
+                    if (request.readyState === 4 && request.status === 200) {
+                        const json = JSON.parse(request.responseText);
+                        const price = json.data.total_price_sats_inscription;
+                        const usdPrice = json.data.total_price_usd_inscription;
+                        resolve({ price, usdPrice });
+                    }
+                };
+                request.send();
+            });
+        }
+
+        function getmerlinothers() {
+            fetch('merlinother.txt')
+                .then(response => response.text())
+                .then(contents => {
+                    const lines = contents.split('\n');
+
+                    const results = [];
+                    for (let i = 0; i < 4; i++) {
+                        const line = JSON.parse(lines[i]);
+                        let result = parseFloat(line.result);
+                        if (i === 0) {
+                            result /= 10e17;
+                        } else {
+                            result /= 10e5;
+                        }
+                        results.push(result);
+                    }
+
+                    console.log(results);
+                    console.log(results[0]);
+                    console.log(results[1]);
+                    ethsum = results[0];
+                    usdcsum = results[1] + results[2];
+                    usdtsum = results[3];
+                })
+                .catch(error => console.error(error));
+        }
+
+        function fetchDataAndUpdateTime() {
+            fetchData();
+            updateUptime();
+            updateDowntime();
+            setTimeout(updateUptime, 1000);
+            setTimeout(updateDowntime, 2000);
+        }
+
+        function updateUptime() {
+            const currentTime = new Date();
+            const uptime = currentTime - startTime;
+            const hours = Math.floor(uptime / (1000 * 60 * 60));
+            const minutes = Math.floor((uptime % (1000 * 60 * 60)) / (1000 * 60));
+            // console.log(currentLanguage + 'testdown');
+            if (currentLanguage == 'en') {
+                document.getElementById('uptime').innerText = hours + ' hours ' + minutes + ' minutes';
+            } else {
+                document.getElementById('uptime').innerText = hours + ' 小时 ' + minutes + ' 分';
+            }
+        }
+
+        function updateDowntime() {
+            const currentTime = new Date();
+            const downtime = endTime - currentTime;
+            const days = Math.floor(downtime / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((downtime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((downtime % (1000 * 60 * 60)) / (1000 * 60));
+            // console.log(currentLanguage + 'testup');
+            if (currentLanguage == 'en') {
+                document.getElementById('downtime').innerText = days + ' days ' + hours + ' hours ' + minutes + ' minutes';
+            } else {
+                document.getElementById('downtime').innerText = days + ' 天 ' + hours + ' 小时 ' + minutes + ' 分';
+            }
+        }
+
+        function fetchData() {
+            fetch('merlinall.txt')
+                .then(response => response.text())
+                .then(data => {
+                    const lines = data.split('\n');
+                    if (lines.length < 7) {
+                        throw new Error('Data is not complete');
+                    }
+                    const btcAmount = Number(lines[6].split(': ')[1]).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    const btcAmounttousd = (Number(lines[6].split(': ')[1]) * btcokprice).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    console.log(btcAmounttousd);
+                    const brc420 = parseInt(lines[4].split(': ')[1]).toLocaleString('en-US');
+                    const bitmap = parseInt(lines[0].split(': ')[1]).toLocaleString('en-US');
+                    const musicbox = parseInt(lines[2].split(': ')[1]).toLocaleString('en-US');
+                    const mineral = parseInt(lines[3].split(': ')[1]).toLocaleString('en-US');
+                    // setsum
+                    document.getElementById('BTC').querySelector('p').innerText = btcAmount;
+                    document.getElementById('BRC-420').querySelector('p').innerText = brc420;
+                    document.getElementById('Bitmap').querySelector('p').innerText = bitmap;
+                    document.getElementById('Musicbox').querySelector('p').innerText = musicbox;
+                    document.getElementById('Mineral').querySelector('p').innerText = mineral;
+                    // tousd
+                    document.getElementById('btctousd').innerText = btcAmounttousd + " " + "$";
+                    document.getElementById('blueboxprice').innerText = (blueboxokprice * parseInt(lines[4].split(': ')[1])).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    document.getElementById('blueboxusd').innerText = (blueboxokusdprice * parseInt(lines[4].split(': ')[1])).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " " + "$";
+                    document.getElementById('bitmapprice').innerText = (bitmapokprice * (parseInt(lines[0].split(': ')[1]))).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    document.getElementById('bitmapusd').innerText = (bitmapokusdprice * (parseInt(lines[0].split(': ')[1]))).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " " + "$";
+                    document.getElementById('musicboxprice').innerText = (musicboxokprice * (parseInt(lines[2].split(': ')[1]))).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    document.getElementById('musicboxusd').innerText = (musicboxokusdprice * (parseInt(lines[2].split(': ')[1]))).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " " + "$";
+                    document.getElementById('mineralprice').innerText = (mineralokprice * (parseInt(lines[3].split(': ')[1]))).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    document.getElementById('mineralusd').innerText = (mineralokusdprice * (parseInt(lines[3].split(': ')[1]))).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " " + "$";
+                    document.getElementById('brcprice').innerText = (brcokprice / 10e7).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    const formattedPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(brcokusdprice);
+                    document.getElementById('brcusd').innerText = formattedPrice;
+                    // merlinother
+                    document.getElementById('eth').querySelector('p').innerText = ethsum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    document.getElementById('usdc').querySelector('p').innerText = usdcsum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    document.getElementById('usdt').querySelector('p').innerText = usdtsum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    document.getElementById('ethtousd').innerText = (ethsum * ethokprice).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " " + "$";
+                    document.getElementById('usdctousd').innerText = usdcsum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " " + "$";
+                    document.getElementById('usdttousd').innerText = usdtsum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " " + "$";
+                    // tvl
+                    const tvl = (blueboxokusdprice * parseInt(lines[4].split(': ')[1])) +
+                        (Number(lines[6].split(': ')[1]) * btcokprice) +
+                        (bitmapokusdprice * (parseInt(lines[0].split(': ')[1]))) +
+                        (musicboxokusdprice * (parseInt(lines[2].split(': ')[1]))) +
+                        (mineralokusdprice * (parseInt(lines[3].split(': ')[1]))) +
+                        Number(brcokusdprice) +
+                        usdcsum +
+                        usdtsum +
+                        (ethsum * ethokprice);
+                    const tvlusd = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(tvl);
+                    document.getElementById('totalusdsum').innerText = tvlusd;
+                    // setpercentage
+                    let btcprices = (Number(lines[6].split(': ')[1]) * btcokprice);
+                    let blueboxprices = (blueboxokusdprice * parseInt(lines[4].split(': ')[1]));
+                    let bitmapprices = (bitmapokusdprice * (parseInt(lines[0].split(': ')[1])));
+                    let tsanprices = (musicboxokusdprice * (parseInt(lines[2].split(': ')[1])));
+                    let mineralprices = (mineralokusdprice * (parseInt(lines[3].split(': ')[1])));
+                    let brcprices = Number(brcokusdprice);
+                    let ethprices = (ethsum * ethokprice);
+
+                    document.getElementById('blueboxfloor').innerText = blueboxokprice.toFixed(2);
+                    document.getElementById('blueboxsumper').innerText = (parseInt(lines[4].split(': ')[1])/10000 * 100).toFixed(2) + "%";
+
+                    document.getElementById('btcper').innerText = ((btcprices / tvl * 100).toFixed(1)) + "%";
+                    document.getElementById('blueboxper').innerText = ((blueboxprices / tvl * 100).toFixed(1)) + "%";
+                    document.getElementById('bitmapper').innerText = ((bitmapprices / tvl * 100).toFixed(1)) + "%";
+                    document.getElementById('tsanper').innerText = ((tsanprices / tvl * 100).toFixed(1)) + "%";
+                    document.getElementById('mineralper').innerText = ((mineralprices / tvl * 100).toFixed(1)) + "%";
+                    document.getElementById('brcper').innerText = ((brcprices / tvl * 100).toFixed(1)) + "%";
+                    document.getElementById('ethper').innerText = ((ethprices / tvl * 100).toFixed(1)) + "%";
+                    document.getElementById('usdtper').innerText = ((usdtsum / tvl * 100).toFixed(1)) + "%";
+                    document.getElementById('usdcper').innerText = ((usdcsum / tvl * 100).toFixed(1)) + "%";
+                })
+                .catch(error => {
+                    console.log('Failed to fetch merlinall.txt:', error);
+                });
+        }
+
+        // Language
+        function getsetLanguage() {
+            // 获取到语言数据并更新 DOM
+            fetch('./json/i18n.json')
+                .then(response => response.json())
+                .then(data => {
+                    let langData = data[currentLanguage];
+                    // 更新 DOM...
+                    document.title = langData['title'];
+                    document.querySelector('h1').childNodes[2].nodeValue = langData['title'];
+                    document.getElementById('BRC-420').querySelector('h2').innerText = langData['blueBox'];
+                    document.getElementById('Musicbox').querySelector('h2').innerText = langData['musicbox'];
+                    document.getElementById('Mineral').querySelector('h2').innerText = langData['sapphire'];
+                    document.querySelector('.uptimeText').innerText = langData['uptimeText'];
+                    document.querySelector('.downtimeText').innerText = langData['downtimeText'];
+                    document.querySelector('.disclaimer').innerText = langData['disclaimer'];
+                });
+
+        }
+        function toggleLanguage() {
+            // 检查是否已选择语言切换器
+            if (document.getElementById('customSwitch').checked) {
+                currentLanguage = 'en'; // 切换到英文
+            } else {
+                currentLanguage = 'zh'; // 切换到中文
+            }
+            // 重新获取语言数据并更新DOM
+            fetch('./json/i18n.json')
+                .then(response => response.json())
+                .then(data => {
+                    let langData = data[currentLanguage];
+                    // 更新 DOM...
+                    document.title = langData['title'];
+                    document.querySelector('h1').childNodes[2].nodeValue = langData['title'];
+                    document.getElementById('BRC-420').querySelector('h2').innerText = langData['blueBox'];
+                    document.getElementById('Musicbox').querySelector('h2').innerText = langData['musicbox'];
+                    document.getElementById('Mineral').querySelector('h2').innerText = langData['sapphire'];
+                    document.querySelector('.uptimeText').innerText = langData['uptimeText'];
+                    document.querySelector('.downtimeText').innerText = langData['downtimeText'];
+                    document.querySelector('.disclaimer').innerText = langData['disclaimer'];
+                    // 其他动态内容
+                    updateUptime();
+                    updateDowntime();
+                });
+        }
+
+    </script>
+    <script class="ToUSDandother">
+        var tooltipTimeout;
+        function toggleTooltip(tooltipId) {
+            var tooltip = document.getElementById(tooltipId);
+            if (tooltip.style.visibility === "visible") {
+                hideTooltip(tooltipId);
+            } else {
+                showTooltip(tooltipId);
+            }
+        }
+
+        function showTooltip(tooltipId) {
+            var tooltip = document.getElementById(tooltipId);
+            tooltip.style.visibility = "visible";
+            tooltip.style.opacity = "1";
+            clearTimeout(tooltipTimeout);
+            tooltipTimeout = setTimeout(function () {
+                hideTooltip(tooltipId);
+            }, 8000);
+        }
+
+        function hideTooltip(tooltipId) {
+            var tooltip = document.getElementById(tooltipId);
+            tooltip.style.visibility = "hidden";
+            tooltip.style.opacity = "0";
+            clearTimeout(tooltipTimeout);
+        }
+
+        function resetTooltipTimeout(tooltipId) {
+            clearTimeout(tooltipTimeout);
+            tooltipTimeout = setTimeout(function () {
+                hideTooltip(tooltipId);
+            }, 8000);
+        }
+
+    </script>
+</body>
+
+</html>
