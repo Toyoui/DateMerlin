@@ -783,8 +783,8 @@
                     document.getElementById('usdttousd').innerText = usdtsum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " " + "$";
                     // tvl
                     const tvl = (blueboxokusdprice * parseInt(lines[4].split(': ')[1])) +
-                        (Number(lines[6].split(': ')[1]) * btcokprice) +
-                        (bitmapokusdprice * (parseInt(lines[0].split(': ')[1]))) +
+                        (total_btc_amount * btcokprice) +
+                        (bitmapokusdprice * total_bitmap_amount) +
                         (musicboxokusdprice * (parseInt(lines[2].split(': ')[1]))) +
                         (mineralokusdprice * (parseInt(lines[3].split(': ')[1]))) +
                         Number(brcokusdprice) +
@@ -794,9 +794,9 @@
                     const tvlusd = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(tvl);
                     document.getElementById('totalusdsum').innerText = tvlusd;
                     // setpercentage
-                    let btcprices = (Number(lines[6].split(': ')[1]) * btcokprice);
+                    let btcprices = (total_btc_amount * btcokprice);
                     let blueboxprices = (blueboxokusdprice * parseInt(lines[4].split(': ')[1]));
-                    let bitmapprices = (bitmapokusdprice * (parseInt(lines[0].split(': ')[1])));
+                    let bitmapprices = (bitmapokusdprice * total_bitmap_amount);
                     let tsanprices = (musicboxokusdprice * (parseInt(lines[2].split(': ')[1])));
                     let mineralprices = (mineralokusdprice * (parseInt(lines[3].split(': ')[1])));
                     let brcprices = Number(brcokusdprice);
