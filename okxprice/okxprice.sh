@@ -8,6 +8,7 @@ curl "https://www.okx.com/priapi/v1/wallet/web/coin/price?coinIds=1" -o btcprice
 curl "https://www.okx.com/priapi/v1/wallet/web/coin/price?coinIds=3" -o ethprice.json
 curl "https://www.okx.com/priapi/v1/nft/project/stats?urlName=bitmap" -o bitmapprice.json
 curl "https://www.okx.com/priapi/v1/nft/project/stats?urlName=brc-420" -o blueboxprice.json
+curl "https://www.okx.com/priapi/v1/nft/project/stats?urlName=mineral-5" -o mineralprice.json
 curl "https://www.okx.com/priapi/v1/nft/project/stats?urlName=this-song-about-nfts-4" -o tsanprice.json
 
 curl "https://bridge.merlinchain.io/api/v1/tvl" -o merlinoff.json
