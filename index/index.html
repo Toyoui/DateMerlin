@@ -53,7 +53,8 @@
         }
 
 
-        #totalusd {
+        #totalusd,
+        .seal-1 {
             color: #1d3d9a;
             font-size: 18px;
             display: flex;
@@ -292,6 +293,8 @@
         </svg>
         Merlin 质押概览
     </h1>
+    <a class="contributor-a seal-1" href="https://bitmap.date/preseal">&#9758;You may benefit&#9756;</a>
+
     <h2 id="totalusd">Total:<span id="totalusdsum">...</span></h2>
 
     <div class="flexContainer marginBottom">
@@ -406,6 +409,25 @@
                 <span class="tooltip-text" id="mineralusd">...</span>
             </div>
         </div>
+        <div class="asset" id="Bluewand">
+            <h2 style="color: #4089d8;">BLUEWAND</h2>
+            <span class="percentage" id="bluewandper">...</span>
+            <p>...</p>
+            <div class="tousdhow" ontouchstart="toggleTooltip('bluewandusd')" ontouchend="hideTooltip('bluewandusd')"
+                onmouseover="showTooltip('bluewandusd')" onmouseout="hideTooltip('bluewandusd')">
+                <span class="tobtc" id="bluetobtc">&asymp;<span id="bluewandprice">...</span> BTC</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 16 16" fill="none"
+                    style="vertical-align: middle;">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M8 15C11.866 15 15 11.866 15 8C15 4.13401 11.866 1 8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15ZM8 16C12.4183 16 16 12.4183 16 8C16 3.58172 12.4183 0 8 0C3.58172 0 0 3.58172 0 8C0 12.4183 3.58172 16 8 16Z"
+                        fill="#D9D9D9"></path>
+                    <path
+                        d="M7.21983 9.79501C7.21983 9.49501 7.23783 9.22301 7.27383 8.97901C7.31383 8.73101 7.39783 8.49101 7.52583 8.25901C7.64183 8.03501 7.77983 7.85301 7.93983 7.71301C8.09983 7.56901 8.27183 7.43101 8.45583 7.29901C8.63983 7.16701 8.82183 7.00501 9.00183 6.81301C9.16183 6.63301 9.26783 6.45301 9.31983 6.27301C9.37183 6.08901 9.39783 5.89501 9.39783 5.69101C9.39783 5.51101 9.37583 5.34901 9.33183 5.20501C9.29183 5.05701 9.22383 4.93101 9.12783 4.82701C8.98383 4.64701 8.80383 4.52301 8.58783 4.45501C8.37583 4.38701 8.15383 4.35301 7.92183 4.35301C7.70183 4.35301 7.49383 4.38301 7.29783 4.44301C7.10583 4.50301 6.94583 4.59701 6.81783 4.72501C6.68983 4.84101 6.59583 4.98301 6.53583 5.15101C6.47583 5.31501 6.44583 5.49301 6.44583 5.68501H5.32983C5.35383 5.33701 5.43583 5.00701 5.57583 4.69501C5.71983 4.37901 5.91783 4.11901 6.16983 3.91501C6.40583 3.71501 6.67583 3.56901 6.97983 3.47701C7.28383 3.38101 7.58983 3.33301 7.89783 3.33301C8.30583 3.33301 8.69183 3.39501 9.05583 3.51901C9.42383 3.64301 9.72983 3.84901 9.97383 4.13701C10.1618 4.34101 10.3018 4.57501 10.3938 4.83901C10.4858 5.10301 10.5318 5.38101 10.5318 5.67301C10.5318 6.02901 10.4598 6.36101 10.3158 6.66901C10.1758 6.97701 9.98583 7.25501 9.74583 7.50301C9.61383 7.64701 9.46983 7.77901 9.31383 7.89901C9.16183 8.01901 9.01583 8.13901 8.87583 8.25901C8.73983 8.37901 8.63183 8.51101 8.55183 8.65501C8.44783 8.84301 8.38783 9.01701 8.37183 9.17701C8.35983 9.33301 8.35383 9.53901 8.35383 9.79501H7.21983ZM7.22583 12.147V10.833H8.35383V12.147H7.22583Z"
+                        fill="black" fill-opacity="0.6"></path>
+                </svg>
+                <span class="tooltip-text" id="bluewandusd">...</span>
+            </div>
+        </div>
         <div class="asset" id="brc20">
             <h2 style="color: #e79e0c;">BRC20</h2>
             <span class="percentage" id="brcper">...</span>
@@ -513,13 +535,18 @@
         let mineralokprice = 0;
         let mineralokusdprice = 0;
 
+        let bluewandbtcamount = 0;
+        let bluewandusdamount = 0;
+
         let brcokprice = 0;
         let brcokusdprice = 0;
 
         let total_btc_amount = 0;
         let total_bitmap_amount = 0;
+        let total_bluewand_amount = 0;
         let btcToken = "btc"; // 传入的token参数
         let bitmapToken = "bitmap"; // 传入的token参数
+        let bluewandLaBel = "BLUEWAND"// 传入的token参数
 
         if (currentLanguage === 'zh') {
             customSwitch.setAttribute('onclick', 'toggleLanguage()');
@@ -556,6 +583,50 @@
             }).catch((error) => {
                 console.log(error);
             });
+            offinfodata(bluewandLaBel).then((result) => {
+                total_bluewand_amount = result.total_amount;
+                bluewandbtcamount = (result.total_btc_amount / 10e7).toFixed(2);
+                bluewandusdamount = result.total_usdt_amount / 10e5;
+            }).catch((error) => {
+                console.log(error);
+            });
+        }
+
+        function offinfodata(label) {
+            return new Promise((resolve, reject) => {
+                var request = new XMLHttpRequest();
+                request.open("GET", "./json/merlinoff.json", true);
+                request.onreadystatechange = function () {
+                    if (request.readyState === 4 && request.status === 200) {
+                        var json = JSON.parse(request.responseText);
+                        var total_amount;
+                        var total_btc_amount;
+                        var total_usdt_amount;
+
+                        // 遍历total_assets数组，找到与传入的token参数匹配的项，并获取total_amount
+                        for (var i = 0; i < json.data.total_assets.length; i++) {
+                            // console.log(label);
+                            // console.log(json.data.total_assets[i].token_label);
+                            if (json.data.total_assets[i].token_label === label) {
+                                total_amount = json.data.total_assets[i].total_amount;
+                                total_btc_amount = json.data.total_assets[i].total_btc_amount;
+                                total_usdt_amount = json.data.total_assets[i].total_usdt_amount;
+                                break;
+                            }
+                        }
+
+                        var result = {
+                            total_amount: total_amount,
+                            total_btc_amount: total_btc_amount,
+                            total_usdt_amount: total_usdt_amount
+                        };
+                        // console.log(result);
+
+                        resolve(result);
+                    }
+                };
+                request.send();
+            });
         }
 
         function getalltheprice() {
@@ -589,6 +660,7 @@
                     console.log(brcokusdprice);
                 });
         }
+
 
         function btcprice() {
             return new Promise((resolve, reject) => {
@@ -761,6 +833,7 @@
                     document.getElementById('Bitmap').querySelector('p').innerText = total_bitmap_amount;
                     document.getElementById('Musicbox').querySelector('p').innerText = musicbox;
                     document.getElementById('Mineral').querySelector('p').innerText = mineral;
+                    document.getElementById('Bluewand').querySelector('p').innerText = total_bluewand_amount;
                     // tousd
                     document.getElementById('btctousd').innerText = btcAmounttousd + " " + "$";
                     document.getElementById('blueboxprice').innerText = (blueboxokprice * parseInt(lines[4].split(': ')[1])).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -774,6 +847,8 @@
                     document.getElementById('brcprice').innerText = (brcokprice / 10e7).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                     const formattedPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(brcokusdprice);
                     document.getElementById('brcusd').innerText = formattedPrice;
+                    document.getElementById('bluewandusd').innerText = bluewandusdamount.toFixed(2) + " " + "$";
+                    document.getElementById('bluewandprice').innerText = bluewandbtcamount;
                     // merlinother
                     document.getElementById('eth').querySelector('p').innerText = ethsum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                     document.getElementById('usdc').querySelector('p').innerText = usdcsum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -790,7 +865,8 @@
                         Number(brcokusdprice) +
                         usdcsum +
                         usdtsum +
-                        (ethsum * ethokprice);
+                        (ethsum * ethokprice) +
+                        bluewandusdamount;
                     const tvlusd = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(tvl);
                     document.getElementById('totalusdsum').innerText = tvlusd;
                     // setpercentage
@@ -810,6 +886,7 @@
                     document.getElementById('bitmapper').innerText = ((bitmapprices / tvl * 100).toFixed(1)) + "%";
                     document.getElementById('tsanper').innerText = ((tsanprices / tvl * 100).toFixed(1)) + "%";
                     document.getElementById('mineralper').innerText = ((mineralprices / tvl * 100).toFixed(1)) + "%";
+                    document.getElementById('bluewandper').innerText = ((bluewandusdamount / tvl * 100).toFixed(1)) + "%";
                     document.getElementById('brcper').innerText = ((brcprices / tvl * 100).toFixed(1)) + "%";
                     document.getElementById('ethper').innerText = ((ethprices / tvl * 100).toFixed(1)) + "%";
                     document.getElementById('usdtper').innerText = ((usdtsum / tvl * 100).toFixed(1)) + "%";
